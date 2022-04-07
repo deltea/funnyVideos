@@ -53,18 +53,22 @@
         let youtubeIdElement = document.getElementById("youtubeId");
         let moviesShowsElement = document.getElementById("moviesShows");
         let ratingElement = document.getElementById("rating");
-        (async () => {
-          const docRef = doc(database, "funny-videos", "videos");
-          const docSnap = await getDoc(docRef);
-          const data = docSnap.data();
-          await updateDoc(docRef, {
-            [nameElement.value]: {
-              rating: parseInt(ratingElement.value),
-              moviesShows: moviesShowsElement.value,
-              youtubeId: youtubeIdElement.value
-            }
-          });
-        })();
+        if (ratingElement.value < 1 || ratingElement.value > 5) {
+          alert("Please change your rating. The range is 1-5.");
+        } else {
+          (async () => {
+            const docRef = doc(database, "funny-videos", "videos");
+            const docSnap = await getDoc(docRef);
+            const data = docSnap.data();
+            await updateDoc(docRef, {
+              [nameElement.value.trim().toLowerCase().replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))]: {
+                rating: parseInt(ratingElement.value),
+                moviesShows: moviesShowsElement.value,
+                youtubeId: youtubeIdElement.value
+              }
+            });
+          })();
+        }
       }
     </script>
   </body>
