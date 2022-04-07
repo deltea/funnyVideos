@@ -1,0 +1,20 @@
+{
+  "name": "funnyvideos",
+  "version": "1.0.0",
+  "description": "A platform for funny movie clips.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "funny",
+    "clips",
+    "videos",
+    "movies"
+  ],
+  "author": "thcheetah777",
+  "license": "MIT",
+  "devDependencies": {
+    "express": "^4.17.3"
+  }
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Funny Videos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+  </head>
+  <body class="container">
+    <h1>Add a Video</h1>
+    <br>
+    <form class="add-video">
+      <div class="form-floating">
+        <input type="text" id="name" class="form-control" name="name" placeholder="Name..." autocomplete="off" required>
+        <label for="floating-text">Name</label>
+      </div>
+      <br>
+      <div class="form-floating">
+        <input type="text" id="youtubeId" class="form-control" name="youtube-id" placeholder="Youtube ID..." autocomplete="off" required>
+        <label for="floating-text">Youtube ID</label>
+      </div>
+      <br>
+      <div class="form-floating">
+        <input type="text" id="moviesShows" class="form-control" name="movies-shows" placeholder="Movies and Shows..." autocomplete="off" required>
+        <label for="floating-text">Movies and Shows</label>
+      </div>
+      <br>
+      <div class="form-floating">
+        <input type="number" id="rating" class="form-control" name="rating" value="3" required>
+        <label for="floating-text">Rating</label>
+      </div>
+      <br>
+      <div class="d-grid gap-2">
+        <button type="button" class="btn btn-primary" name="submit" id="addButton">Add</button>
+        <a href="index.html?search=" class="btn btn-outline-secondary">Back</a>
+      </div>
+    </form>
+    <script type="module">
+      import {firebaseConfig} from "./firebaseConfig.js";
+      import {initializeApp} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
+      import {collection, addDoc, getFirestore, doc, getDoc, updateDoc} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
+
+      const firebase = initializeApp(firebaseConfig);
+      const database = getFirestore(firebase);
+
+      let button = document.getElementById("addButton");
+      button.onclick = () => {
+        let nameElement = document.getElementById("name");
+        let youtubeIdElement = document.getElementById("youtubeId");
+        let moviesShowsElement = document.getElementById("moviesShows");
+        let ratingElement = document.getElementById("rating");
+        (async () => {
+          const docRef = doc(database, "funny-videos", "videos");
+          const docSnap = await getDoc(docRef);
+          const data = docSnap.data();
+          await updateDoc(docRef, {
+            [nameElement.value]: {
+              rating: parseInt(ratingElement.value),
+              moviesShows: moviesShowsElement.value,
+              youtubeId: youtubeIdElement.value
+            }
+          });
+        })();
+      }
+    </script>
+  </body>
+</html>

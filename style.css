@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
+.home {
+  font-family: 'Indie Flower', cursive;
+  text-align: center;
+  font-size: 50px;
+  color: inherit;
+  text-decoration: none;
+}
+.material-icons {
+  position: absolute;
+  margin-left: 5px;
+}
+.new {
+  font-family: 'Caveat', cursive;
+}
+.home:hover {
+  cursor: pointer;
+}
+body {
+  margin: 50px;
+  text-align: center;
+  font-family: 'Indie Flower', cursive;
+}
+.notfilled {
+  background-color: lightgray;
+}
+.rating {
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+  display: inline-block;
+}
+.movieShowLink {
+  margin-right: 20px;
+}
+.name {
+  margin-right: 20px;
+  font-family: 'Caveat', cursive;
+}
+.search-bar {
+  font-family: 'Caveat', cursive;
+}
+h2 {
+  font-size: 30px;
+}
+.loadingText {
+  font-family: 'Indie Flower', cursive;
+}
+#spinner {
+  margin-bottom: 20px;
+}
