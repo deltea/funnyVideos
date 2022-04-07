@@ -12,6 +12,7 @@ import {collection, addDoc, getFirestore, doc, getDoc, setDoc} from "https://www
 const firebase = initializeApp(firebaseConfig);
 const database = getFirestore(firebase);
 let data = [];
+let searchBar = document.getElementById("searchBar");
 (async () => {
   const dataDoc = doc(database, "funny-videos", "videos");
   const dataSnap = await getDoc(dataDoc);

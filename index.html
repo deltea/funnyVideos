@@ -18,18 +18,13 @@
         document.getElementById("spinner").remove();
       }
       window.onkeypress = function() {
-        document.getElementById("search").focus();
+        document.getElementById("searchBar").focus();
       }
     </script>
     <a class="home" href="index.html?search=">Funny Videos</a>
     <br>
     <br>
-    <form class="search-bar" method="GET">
-      <div class="searchArea input-group">
-        <input id="search" class="form-control" type="text" name="search" placeholder="Search Name, Rating, or Movie..." autocomplete="off" value="">
-        <input type="submit" class="submitSearch btn btn-primary" value="🔎">
-      </div>
-      <br>
+    <form class="search-bar">
       <div class="d-grid gap-2">
         <a href="addVideo.html" class="btn btn-outline-primary">Add a video <span class="material-icons">add</span></a>
       </div>
