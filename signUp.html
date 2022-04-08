@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Sign Up</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
+  <body class="container">
+    <h1><a href="index.html" class="signUpTitle">Sign Up</a></h1>
+    <br>
+    <div class="d-grid gap-2 col-3 mx-auto">
+      <button type="button" name="button" class="btn btn-outline-success btn-lg" id="signUpButton">Sign Up with Google</button>
+    </div>
+    <script type="module">
+      import {firebaseConfig} from "./firebaseConfig.js";
+      import {initializeApp} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
+      import {getAuth, signInWithRedirect, GoogleAuthProvider} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+
+      const firebase = initializeApp(firebaseConfig);
+      const provider = new GoogleAuthProvider();
+      const auth = getAuth();
+
+      let signUpButton = document.getElementById("signUpButton");
+      signUpButton.onclick = () => {
+        signInWithRedirect(auth, provider).then((result) => {
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          const user = result.user;
+          console.log(user);
+        }).catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          const email = error.email;
+          const credential = GoogleAuthProvider.credentialFromError(error);
+        });
+      }
+    </script>
+  </body>
+</html>

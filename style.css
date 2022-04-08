@@ -47,6 +47,17 @@ h2 {
 .loadingText {
   font-family: 'Indie Flower', cursive;
 }
+.signUpButton, .signInButton {
+  float: right;
+  margin-left: 5px;
+}
+.signUpTitle {
+  text-decoration: none;
+  color: black;
+}
+.profileImg {
+  clip-path: circle();
+}
 #spinner {
   margin-bottom: 20px;
 }

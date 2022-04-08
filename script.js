@@ -7,10 +7,12 @@ The main code for Funny Videos.
 import {firebaseConfig} from "./firebaseConfig.js";
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
 import {collection, addDoc, getFirestore, doc, getDoc, setDoc} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
+import {getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
 
 // ---------- Data ----------
 const firebase = initializeApp(firebaseConfig);
 const database = getFirestore(firebase);
+const auth = getAuth();
 let data = [];
 let searchBar = document.getElementById("searchBar");
 (async () => {
@@ -68,3 +70,13 @@ let searchBar = document.getElementById("searchBar");
     document.body.appendChild(document.createElement("hr"));
   });
 })();
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    let profile = document.createElement(null);
+    profile.innerHTML = "<img src='https://i.guim.co.uk/img/media/26392d05302e02f7bf4eb143bb84c8097d09144b/446_167_3683_2210/master/3683.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=49ed3252c0b2ffb49cf8b508892e452d' alt='Profile Image' width='50' class='profileImg'>";
+    document.getElementById("signUp").removeChild(document.getElementById("signUpButton"));
+    document.getElementById("signUp").appendChild(profile);
+  } else {
+    console.log("Not logged in.");
+  }
+});
