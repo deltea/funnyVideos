@@ -6,7 +6,7 @@ The main code for Funny Videos.
 
 import {firebaseConfig} from "./firebaseConfig.js";
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
-import {collection, addDoc, getFirestore, doc, getDoc, setDoc} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
+import {collection, addDoc, getFirestore, doc, getDoc, updateDoc} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
 import {getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
 
 // ---------- Data ----------
@@ -54,6 +54,50 @@ let searchBar = document.getElementById("searchBar");
     let nameElement = document.createElement(null);
     nameElement.innerHTML = `<span class="name">${name}:</span>`;
 
+    // Add the likes
+    let likeElement = document.createElement("p");
+    likeElement.setAttribute("class", "likeButton");
+    likeElement.innerText = "🤍";
+    onAuthStateChanged(auth, (user) => {
+      (async () => {
+        const usersDoc = doc(database, "funny-videos", "users");
+        const usersSnap = await getDoc(usersDoc);
+        const data = usersSnap.data();
+        const currentUserLikes = data[auth.currentUser.uid].likes;
+        if (currentUserLikes.includes(name)) {
+          likeElement.liked = true;
+          likeElement.innerText = "❤️";
+        } else {
+          likeElement.liked = false;
+          likeElement.innerText = "🤍";
+        }
+      })();
+    });
+    likeElement.onclick = () => {
+      onAuthStateChanged(auth, (user) => {
+        (async () => {
+          const usersDoc = doc(database, "funny-videos", "users");
+          const usersSnap = await getDoc(usersDoc);
+          data = usersSnap.data();
+          let likesAdded = data[auth.currentUser.uid].likes;
+          if (likeElement.liked) {
+            likeElement.liked = false;
+            likeElement.innerText = "🤍";
+            likesAdded.splice(likesAdded.indexOf(name), 1);
+          } else {
+            likeElement.liked = true;
+            likeElement.innerText = "❤️";
+            likesAdded.push(name);
+          }
+          await updateDoc(usersDoc, {
+            [auth.currentUser.uid]: {
+              likes: likesAdded
+            }
+          });
+        })();
+      });
+    }
+
     // Add the video, duh
     let videoElement = document.createElement(null);
     videoElement.innerHTML = `<iframe width="853" height="480" class="shadow-lg" src="https://www.youtube.com/embed/${youtubeId}?controls=0" frameborder="0" allowfullscreen></iframe>`;
@@ -65,18 +109,24 @@ let searchBar = document.getElementById("searchBar");
     ratingElements.forEach(element => {
       header.appendChild(element);
     });
+    header.appendChild(likeElement);
     document.body.appendChild(document.createElement("br"));
     document.body.appendChild(videoElement);
     document.body.appendChild(document.createElement("hr"));
   });
 })();
 onAuthStateChanged(auth, (user) => {
+  let signUpDiv = document.getElementById("signUp");
   if (user) {
     let profile = document.createElement(null);
-    profile.innerHTML = "<img src='https://i.guim.co.uk/img/media/26392d05302e02f7bf4eb143bb84c8097d09144b/446_167_3683_2210/master/3683.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=49ed3252c0b2ffb49cf8b508892e452d' alt='Profile Image' width='50' class='profileImg'>";
-    document.getElementById("signUp").removeChild(document.getElementById("signUpButton"));
-    document.getElementById("signUp").appendChild(profile);
+    let dropdownDiv = document.createElement("div");
+
+    dropdownDiv.setAttribute("class", "dropdown");
+    profile.innerHTML = `<span class='username'>${user.displayName}</span><a href='#' id='profileImg'><img src='${user.photoURL}' alt='Profile Image' width='50' class='profileImg'></a>`;
+    signUpDiv.appendChild(profile);
   } else {
-    console.log("Not logged in.");
+    let signUpButton = document.createElement(null);
+    signUpButton.innerHTML = "<a href='signUp.html' class='btn btn-primary' id='signUpButton'>Sign Up</a>";
+    signUpDiv.appendChild(signUpButton);
   }
 });

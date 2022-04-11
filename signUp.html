@@ -21,24 +21,38 @@
     <script type="module">
       import {firebaseConfig} from "./firebaseConfig.js";
       import {initializeApp} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
-      import {getAuth, signInWithRedirect, GoogleAuthProvider} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+      import {collection, addDoc, getFirestore, doc, getDoc, updateDoc} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
+      import {getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, getAdditionalUserInfo, getRedirectResult} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
 
       const firebase = initializeApp(firebaseConfig);
+      const database = getFirestore(firebase);
       const provider = new GoogleAuthProvider();
       const auth = getAuth();
 
       let signUpButton = document.getElementById("signUpButton");
       signUpButton.onclick = () => {
-        signInWithRedirect(auth, provider).then((result) => {
+        signInWithPopup(auth, provider).then((result) => {
           const credential = GoogleAuthProvider.credentialFromResult(result);
           const token = credential.accessToken;
           const user = result.user;
-          console.log(user);
+          (async () => {
+            const usersDoc = doc(database, "funny-videos", "users");
+            const usersSnap = await getDoc(usersDoc);
+            const data = usersSnap.data();
+            if (getAdditionalUserInfo(result).isNewUser) {
+              await updateDoc(usersDoc, {
+                [user.uid]: {
+                  likes: []
+                }
+              });
+            }
+          })();
         }).catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           const email = error.email;
           const credential = GoogleAuthProvider.credentialFromError(error);
+          console.log(errorMessage);
         });
       }
     </script>

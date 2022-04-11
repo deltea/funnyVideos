@@ -58,6 +58,14 @@ h2 {
 .profileImg {
   clip-path: circle();
 }
+.username {
+  font-size: 20px;
+  margin-right: 20px;
+}
+.likeButton {
+  cursor: pointer;
+  margin-left: 20px;
+}
 #spinner {
   margin-bottom: 20px;
 }
