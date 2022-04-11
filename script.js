@@ -119,9 +119,6 @@ onAuthStateChanged(auth, (user) => {
   let signUpDiv = document.getElementById("signUp");
   if (user) {
     let profile = document.createElement(null);
-    let dropdownDiv = document.createElement("div");
-
-    dropdownDiv.setAttribute("class", "dropdown");
     profile.innerHTML = `<span class='username'>${user.displayName}</span><a href='#' id='profileImg'><img src='${user.photoURL}' alt='Profile Image' width='50' class='profileImg'></a>`;
     signUpDiv.appendChild(profile);
   } else {
