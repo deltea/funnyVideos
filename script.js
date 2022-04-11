@@ -130,7 +130,9 @@ onAuthStateChanged(auth, (user) => {
     }
   } else {
     let signUpButton = document.createElement(null);
+    let addVideoButton = document.getElementById("addVideoButton");
     signUpButton.innerHTML = "<a href='signUp.html' class='btn btn-primary' id='signUpButton'>Sign Up</a>";
     signUpDiv.appendChild(signUpButton);
+    document.body.removeChild(addVideoButton);
   }
 });
