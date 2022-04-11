@@ -7,7 +7,7 @@ The main code for Funny Videos.
 import {firebaseConfig} from "./firebaseConfig.js";
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
 import {collection, addDoc, getFirestore, doc, getDoc, updateDoc} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
-import {getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+import {getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
 
 // ---------- Data ----------
 const firebase = initializeApp(firebaseConfig);
@@ -119,8 +119,15 @@ onAuthStateChanged(auth, (user) => {
   let signUpDiv = document.getElementById("signUp");
   if (user) {
     let profile = document.createElement(null);
-    profile.innerHTML = `<span class='username'>${user.displayName}</span><a href='#' id='profileImg'><img src='${user.photoURL}' alt='Profile Image' width='50' class='profileImg'></a>`;
+    profile.innerHTML = `<span class='username'>${user.displayName}</span><a href='#' id='profileImg'><img src='${user.photoURL}' alt='Profile Image' width='50' class='profileImg'></a><button class='logOutButton btn btn-primary' id='logOutButton'>Log Out</button>`;
     signUpDiv.appendChild(profile);
+    document.getElementById("logOutButton").onclick = () => {
+      signOut(auth).then(() => {
+        signUpDiv.removeChild(profile);
+      }).catch((error) => {
+        console.log(error.message);
+      });
+    }
   } else {
     let signUpButton = document.createElement(null);
     signUpButton.innerHTML = "<a href='signUp.html' class='btn btn-primary' id='signUpButton'>Sign Up</a>";
