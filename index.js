@@ -6,7 +6,7 @@ The server for Funny Videos.
 
 const express = require("express");
 const app = express();
-const port = 8000;
+const port = 9000;
 const path = require("path");
 
 app.use(express.static("./"));
